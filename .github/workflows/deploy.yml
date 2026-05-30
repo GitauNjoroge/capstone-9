@@ -1,0 +1,29 @@
+name: Deploy via OIDC
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::803871049728:role/GitHubActionsDeployRole
+          aws-region: us-east-1
+
+      - name: Verify identity (no static keys used)
+        run: aws sts get-caller-identity
+
+      - name: Deploy test file to S3
+        run: |
+          echo "Deployed via OIDC at $(date)" > oidc-proof.txt
+          aws s3 cp oidc-proof.txt s3://org-cloudtrail-logs-803871049728/oidc-test/oidc-proof.txt
+          echo "Success — temporary credentials only, no stored secrets"
