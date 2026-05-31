@@ -1,0 +1,32 @@
+{
+  "WebACLName": "capstone-web-acl",
+  "WebACLId": "ae9f5758-0fbd-4d0f-a324-7392a1ae8502",
+  "ALB": "capstone-alb-1694568553.us-east-1.elb.amazonaws.com",
+  "DefaultAction": "Allow",
+  "Rules": [
+    {
+      "Name": "AWSManagedRulesCommonRuleSet",
+      "Priority": 1,
+      "Type": "ManagedRuleGroup",
+      "VendorName": "AWS",
+      "Blocks": "XSS, path traversal, bad inputs"
+    },
+    {
+      "Name": "AWSManagedRulesSQLiRuleSet",
+      "Priority": 2,
+      "Type": "ManagedRuleGroup",
+      "VendorName": "AWS",
+      "Blocks": "SQL injection attacks"
+    },
+    {
+      "Name": "RateLimitRule",
+      "Priority": 3,
+      "Type": "RateBased",
+      "Limit": 100,
+      "WindowSeconds": 300,
+      "AggregateKeyType": "IP",
+      "Action": "Block"
+    }
+  ],
+  "Logging": "arn:aws:logs:us-east-1:803871049728:log-group:aws-waf-logs-capstone"
+}

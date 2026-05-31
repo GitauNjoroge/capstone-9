@@ -1,0 +1,36 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "AllowDevOpsActions",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:*", "ecs:*", "lambda:*",
+        "s3:GetObject", "s3:PutObject", "s3:ListBucket",
+        "cloudwatch:*", "logs:*",
+        "iam:GetRole", "iam:ListRoles", "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DenyDestructiveS3",
+      "Effect": "Deny",
+      "Action": [
+        "s3:DeleteBucket",
+        "s3:DeleteBucketPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DenyPrivilegeEscalation",
+      "Effect": "Deny",
+      "Action": [
+        "iam:CreateUser",
+        "iam:AttachUserPolicy",
+        "iam:CreateAccessKey",
+        "iam:UpdateAssumeRolePolicy"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
